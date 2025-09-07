@@ -59,7 +59,7 @@ const authorQuery = `
 
 export const getArticles = async (): Promise<Article[]> => {
   const articles = await client.fetch(articlesQuery, {}, { cache: 'no-store' });
-  return articles.map((article: any) => ({
+  return articles.map((article: Article) => ({
     ...article,
     mainImage: article.mainImage?.asset?.url,
     author: {
