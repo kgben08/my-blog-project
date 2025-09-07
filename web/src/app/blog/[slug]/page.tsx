@@ -3,10 +3,12 @@ import Sidebar from '@/components/Sidebar';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
+import type { PageProps } from 'next';
 
 // This is a dummy comment to trigger a new commit.
-const ArticlePage = async ({ params }: { params: { slug: string } }) => {
-  const article = await getArticleBySlug(params.slug);
+const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
 
   if (!article) {
     return <div className="text-center py-20 text-red-500">Article not found.</div>;

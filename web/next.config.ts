@@ -4,7 +4,6 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["pics.photos", "cdn.sanity.io"],
   },
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
