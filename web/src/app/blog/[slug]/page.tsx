@@ -4,13 +4,8 @@ import Image from 'next/image';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 
-interface ArticlePageProps {
-  params: {
-    slug: string;
-  };
-}
-
-const ArticlePage = async ({ params }: ArticlePageProps) => {
+// This is a dummy comment to trigger a new commit.
+const ArticlePage = async ({ params }: { params: { slug: string } }) => {
   const article = await getArticleBySlug(params.slug);
 
   if (!article) {
