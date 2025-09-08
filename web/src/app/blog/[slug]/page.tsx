@@ -14,6 +14,9 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
     return <div className="text-center py-20 text-red-500">Article not found.</div>;
   }
 
+  const totalChars = article.body.join('').length;
+  const readingTime = Math.ceil(totalChars / 500);
+
   return (
     <div className="flex flex-col lg:flex-row animate-fade-in-up">
       <article className="lg:w-1/2 lg:pr-8">
@@ -32,6 +35,9 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
               <span>By {article.author.name}</span>
               {article.publishedAt && (
                 <span className="block">{format(new Date(article.publishedAt), 'yyyy年MM月dd日', { locale: ja })}</span>
+              )}
+              {readingTime > 0 && (
+                <span className="block text-xs mt-1">約{readingTime}分で読めます</span>
               )}
             </div>
           </div>
