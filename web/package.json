@@ -9,6 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
     "@sanity/client": "^7.11.0",
     "date-fns": "^4.1.0",
     "next": "15.5.2",
@@ -22,8 +25,8 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.2",
+    "eslint": "^9.35.0",
+    "eslint-config-next": "^15.5.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
