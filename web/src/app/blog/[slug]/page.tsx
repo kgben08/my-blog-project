@@ -30,7 +30,9 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
             <Image className="w-10 h-10 rounded-full mr-4" src={article.author.imageUrl} alt={article.author.name} width={40} height={40} />
             <div>
               <span>By {article.author.name}</span>
-              <span className="block">{format(new Date(article.publishedAt), 'yyyy年MM月dd日', { locale: ja })}</span>
+              {article.publishedAt && (
+                <span className="block">{format(new Date(article.publishedAt), 'yyyy年MM月dd日', { locale: ja })}</span>
+              )}
             </div>
           </div>
         </header>
