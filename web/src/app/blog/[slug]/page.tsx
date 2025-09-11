@@ -15,7 +15,8 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
     return <div className="text-center py-20 text-red-500">Article not found.</div>;
   }
 
-  const totalChars = article.body.join('').length;
+  // Defensive check for article.body
+  const totalChars = (article.body && Array.isArray(article.body)) ? article.body.join('').length : 0;
   const readingTime = Math.ceil(totalChars / 500);
 
   return (
@@ -33,7 +34,9 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
             </div>
             <h1 className="text-3xl md:text-4xl font-bold font-lato text-dark-gray leading-tight mb-4">{article.title}</h1>
             <div className="flex items-center text-sm text-gray-500">
-              <Image className="w-10 h-10 rounded-full mr-4" src={article.author.imageUrl} alt={article.author.name} width={40} height={40} />
+              {article.author.imageUrl && ( // Conditionally render author image
+                <Image className="w-10 h-10 rounded-full mr-4" src={article.author.imageUrl} alt={article.author.name} width={40} height={40} />
+              )}
               <div>
                 <span>By {article.author.name}</span>
                 {article.publishedAt && (
@@ -46,10 +49,12 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
             </div>
           </header>
           <div className="relative w-full h-auto max-h-[500px] mb-8">
-            <Image src={article.mainImage} alt={article.title} layout="fill" objectFit="cover" className="rounded-lg shadow-lg"/>
+            {article.mainImage && ( // Conditionally render main image
+              <Image src={article.mainImage} alt={article.title} layout="fill" objectFit="cover" className="rounded-lg shadow-lg"/>
+            )}
           </div>
           <div className="prose prose-lg max-w-none text-dark-gray/90 leading-[1.8] font-noto-sans-jp">
-            {article.body.map((paragraph, index) => (
+            {article.body && Array.isArray(article.body) && article.body.map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
           </div>
