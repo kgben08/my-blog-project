@@ -49,13 +49,6 @@ export default function RootLayout({
           `,
         }}
       />
-      {/* Google AdSense Script */}
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3902913096717318"
-        crossOrigin="anonymous"
-        strategy="afterInteractive"
-      />
       <body className={`${lato.variable} ${notoSansJP.variable} bg-base-white text-dark-gray flex flex-col min-h-screen`}>
         <Header />
         <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
