@@ -41,12 +41,41 @@ const articleBySlugQuery = `
   }
 `;
 
+// GROQ query to fetch articles by category
+const articlesByCategoryQuery = `
+  *[_type == "post" && $categoryId in categories[]._ref]{
+    _id,
+    title,
+    "slug": slug.current,
+    "excerpt": pt::text(excerpt),
+    mainImage{
+      asset->{
+        _id,
+        url
+      }
+    },
+    publishedAt,
+    body,
+    "author": author->{name, "imageUrl": image.asset->url},
+    "categories": categories[]->{"id": _id, title}
+  } | order(publishedAt desc)
+`;
+
 // GROQ query to fetch all categories with mapped IDs
 const categoriesQuery = `
   *[_type == "category"]{
     "id": _id,
     title
   } | order(title asc)
+`;
+
+// GROQ query to fetch a single category by ID
+const categoryByIdQuery = `
+  *[_type == "category" && _id == $categoryId][0]{
+    "id": _id,
+    title,
+    description
+  }
 `;
 
 // GROQ query to fetch the author
@@ -87,9 +116,26 @@ export const getArticleBySlug = async (slug: string): Promise<Article | undefine
   };
 };
 
+export const getArticlesByCategory = async (categoryId: string): Promise<Article[]> => {
+  const articles = await client.fetch(articlesByCategoryQuery, { categoryId }, { cache: 'no-store' });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return articles.map((article: any) => ({
+    ...article,
+    mainImage: article.mainImage?.asset?.url,
+    author: {
+      name: article.author?.name,
+      imageUrl: article.author?.imageUrl,
+    },
+  }));
+};
+
 export const getCategories = async (): Promise<Category[]> => {
   // The query now returns the data in the shape that the Category type expects.
   return client.fetch(categoriesQuery, {}, { cache: 'no-store' });
+};
+
+export const getCategoryById = async (categoryId: string): Promise<Category | undefined> => {
+  return client.fetch(categoryByIdQuery, { categoryId }, { cache: 'no-store' });
 };
 
 export const getAuthor = async (): Promise<Author> => {
