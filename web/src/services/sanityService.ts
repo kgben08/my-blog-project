@@ -1,13 +1,13 @@
 import { client } from '@/lib/sanity';
 import { Article, Author, Category } from '@/types';
 
-// GROQ query to fetch all articles
+// GROQ query to fetch all articles with plain text excerpt and mapped category IDs
 const articlesQuery = `
   *[_type == "post"]{
     _id,
     title,
     "slug": slug.current,
-    excerpt,
+    "excerpt": pt::text(excerpt),
     mainImage{
       asset->{
         _id,
@@ -17,17 +17,17 @@ const articlesQuery = `
     publishedAt,
     body,
     "author": author->{name, "imageUrl": image.asset->url},
-    "categories": categories[]->{_id, title}
+    "categories": categories[]->{"id": _id, title}
   } | order(publishedAt desc)
 `;
 
-// GROQ query to fetch a single article by slug
+// GROQ query to fetch a single article by slug with plain text excerpt and mapped category IDs
 const articleBySlugQuery = `
   *[_type == "post" && slug.current == $slug][0]{
     _id,
     title,
     "slug": slug.current,
-    excerpt,
+    "excerpt": pt::text(excerpt),
     mainImage{
       asset->{
         _id,
@@ -37,14 +37,14 @@ const articleBySlugQuery = `
     publishedAt,
     body,
     "author": author->{name, "imageUrl": image.asset->url},
-    "categories": categories[]->{_id, title}
+    "categories": categories[]->{"id": _id, title}
   }
 `;
 
-// GROQ query to fetch all categories
+// GROQ query to fetch all categories with mapped IDs
 const categoriesQuery = `
   *[_type == "category"]{
-    _id,
+    "id": _id,
     title
   } | order(title asc)
 `;
@@ -59,7 +59,10 @@ const authorQuery = `
 
 export const getArticles = async (): Promise<Article[]> => {
   const articles = await client.fetch(articlesQuery, {}, { cache: 'no-store' });
-  return articles.map((article: Article) => ({
+  // The query now returns the data in the shape that the Article type expects for the most part.
+  // We just need to flatten the mainImage and author objects.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return articles.map((article: any) => ({
     ...article,
     mainImage: article.mainImage?.asset?.url,
     author: {
@@ -72,6 +75,8 @@ export const getArticles = async (): Promise<Article[]> => {
 export const getArticleBySlug = async (slug: string): Promise<Article | undefined> => {
   const article = await client.fetch(articleBySlugQuery, { slug }, { cache: 'no-store' });
   if (!article) return undefined;
+  // The query now returns the data in the shape that the Article type expects for the most part.
+  // We just need to flatten the mainImage and author objects.
   return {
     ...article,
     mainImage: article.mainImage?.asset?.url,
@@ -83,6 +88,7 @@ export const getArticleBySlug = async (slug: string): Promise<Article | undefine
 };
 
 export const getCategories = async (): Promise<Category[]> => {
+  // The query now returns the data in the shape that the Category type expects.
   return client.fetch(categoriesQuery, {}, { cache: 'no-store' });
 };
 
