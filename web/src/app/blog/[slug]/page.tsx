@@ -30,12 +30,48 @@ const components = {
       />
     ),
     affiliateProduct: AffiliateProductComponent,
+    table: ({value}: any) => {
+      const {rows} = value
+      if (!rows) return null
+
+      return (
+        <table className="min-w-full divide-y divide-gray-200 border">
+          <thead className="bg-gray-50">
+            {rows[0].cells.map((cell: string, index: number) => (
+              <th key={index} className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                {cell}
+              </th>
+            ))}
+          </thead>
+          <tbody className="divide-y divide-gray-200 bg-white">
+            {rows.slice(1).map((row: any, rowIndex: number) => (
+              <tr key={rowIndex}>
+                {row.cells.map((cell: string, cellIndex: number) => (
+                  <td key={cellIndex} className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )
+    },
   },
   marks: {
-    link: ({ children, value }: { children: React.ReactNode, value?: { href?: string } }) => (
-      <a href={value?.href} target="_blank" rel="noopener noreferrer" className="text-seafoam-green hover:underline">
-        {children}
-      </a>
+    link: ({children, value}: any) => {
+      const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
+      return (
+        <a href={value.href} rel={rel} className="text-blue-500 underline hover:text-blue-600">
+          {children}
+        </a>
+      )
+    },
+    highlight: ({children}: {children: React.ReactNode}) => (
+      <span className="rounded bg-yellow-200 px-1 py-0.5 text-yellow-900">{children}</span>
+    ),
+    code: ({children}: {children: React.ReactNode}) => (
+      <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-sm text-red-600">{children}</code>
     ),
   },
 };
