@@ -6,6 +6,8 @@ import { ja } from 'date-fns/locale';
 import type { PageProps } from 'next';
 import ReadingProgressBar from '@/components/ReadingProgressBar';
 import { PortableText } from '@portabletext/react';
+import { AdSenseComponent } from '@/components/AdSenseComponent';
+import { AffiliateProductComponent } from '@/components/AffiliateProductComponent';
 
 const components = {
   types: {
@@ -21,6 +23,13 @@ const components = {
         />
       </div>
     ),
+    adSense: ({ value }: any) => (
+      <AdSenseComponent
+        dataAdClient={value.dataAdClient}
+        dataAdSlot={value.dataAdSlot}
+      />
+    ),
+    affiliateProduct: AffiliateProductComponent,
   },
   marks: {
     link: ({ children, value }: { children: React.ReactNode, value?: { href?: string } }) => (
@@ -48,7 +57,7 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
     <>
       <ReadingProgressBar />
       <div className="flex flex-col lg:flex-row animate-fade-in-up">
-        <article className="lg:w-1/2 lg:pr-8">
+        <article className="lg:w-2/3 lg:pr-8">
           <header className="mb-8">
             <div className="flex flex-wrap gap-2 mb-4">
               {article.categories.map(cat => (
@@ -78,7 +87,7 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
               <Image src={article.mainImage} alt={article.title} fill style={{ objectFit: 'cover' }} className="rounded-lg shadow-lg"/>
             )}
           </div>
-          <div className="prose prose-lg max-w-none text-dark-gray/90 leading-[1.8] font-noto-sans-jp">
+          <div className="prose prose-lg max-w-none prose-p:text-dark-gray/90 prose-strong:text-dark-gray prose-headings:text-dark-gray prose-a:text-seafoam-green leading-[1.8] font-noto-sans-jp">
             {article.body && <PortableText value={article.body} components={components} />}
           </div>
         </article>

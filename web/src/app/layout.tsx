@@ -32,13 +32,7 @@ export default function RootLayout({
   return (
     <html lang="ja" className={`${lato.variable} ${notoSansJP.variable}`}>
       <head>
-        <meta name="google-adsense-account" content="ca-pub-3902913096717318" />
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3902913096717318"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        {/* The AdSense script is now loaded below, before the closing body tag */}
       </head>
       <body className={`${lato.variable} ${notoSansJP.variable} bg-base-white text-dark-gray flex flex-col min-h-screen`}>
         <Script
@@ -64,6 +58,13 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        {/* Google AdSense Script */}
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

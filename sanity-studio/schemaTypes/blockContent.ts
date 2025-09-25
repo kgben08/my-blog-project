@@ -63,5 +63,13 @@ export default defineType({
       type: 'image',
       options: {hotspot: true},
     }),
+    defineArrayMember({
+      type: 'adSense',
+      title: 'AdSense Ad',
+    }),
+    defineArrayMember({
+      type: 'affiliateProduct',
+      title: 'Affiliate Product Card',
+    }),
   ],
 })
