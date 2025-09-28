@@ -79,11 +79,5 @@ export default defineType({
       title: 'Affiliate Product Card',
       type: 'affiliateProduct', // `schemas/affiliateProduct.ts`で定義
     }),
-    // 表（テーブル）ブロック
-    defineArrayMember({
-      name: 'table',
-      title: 'Table',
-      type: 'table', //別途`sanity-plugin-table`のインストールが必要
-    }),
   ],
 })

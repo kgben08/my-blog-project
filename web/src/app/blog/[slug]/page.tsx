@@ -30,33 +30,7 @@ const components = {
       />
     ),
     affiliateProduct: AffiliateProductComponent,
-    table: ({value}: any) => {
-      const {rows} = value
-      if (!rows) return null
 
-      return (
-        <table className="min-w-full divide-y divide-gray-200 border">
-          <thead className="bg-gray-50">
-            {rows[0].cells.map((cell: string, index: number) => (
-              <th key={index} className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                {cell}
-              </th>
-            ))}
-          </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {rows.slice(1).map((row: any, rowIndex: number) => (
-              <tr key={rowIndex}>
-                {row.cells.map((cell: string, cellIndex: number) => (
-                  <td key={cellIndex} className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
-                    {cell}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )
-    },
   },
   marks: {
     link: ({children, value}: any) => {
@@ -85,6 +59,13 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
     return <div className="text-center py-20 text-red-500">Article not found.</div>;
   }
 
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), 'yyyy年MM月dd日', { locale: ja });
+  };
+
+  const publishedDate = formatDate(article._createdAt);
+  const updatedDate = formatDate(article._updatedAt);
+
   // TODO: Fix reading time calculation for Portable Text
   // const totalChars = (article.body && Array.isArray(article.body)) ? article.body.join('').length : 0;
   const readingTime = 5; // Placeholder
@@ -109,9 +90,12 @@ const ArticlePage = async ({ params }: PageProps<{ slug: string }>) => {
               )}
               <div>
                 <span>By {article.author.name}</span>
-                {article.publishedAt && (
-                  <span className="block">{format(new Date(article.publishedAt), 'yyyy年MM月dd日', { locale: ja })}</span>
-                )}
+                <div className="flex items-center space-x-4 mt-1">
+                  <span className="text-xs">公開日: {publishedDate}</span>
+                  {updatedDate !== publishedDate && (
+                    <span className="text-xs">更新日: {updatedDate}</span>
+                  )}
+                </div>
                 {readingTime > 0 && (
                   <span className="block text-xs mt-1">約{readingTime}分で読めます</span>
                 )}

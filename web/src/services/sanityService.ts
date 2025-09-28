@@ -5,6 +5,8 @@ import { Article, Author, Category } from '@/types';
 const articlesQuery = `
   *[_type == "post"]{
     _id,
+    _createdAt,
+    _updatedAt,
     title,
     "slug": slug.current,
     "excerpt": pt::text(excerpt),
@@ -25,6 +27,8 @@ const articlesQuery = `
 const articleBySlugQuery = `
   *[_type == "post" && slug.current == $slug][0]{
     _id,
+    _createdAt,
+    _updatedAt,
     title,
     "slug": slug.current,
     "excerpt": pt::text(excerpt),
@@ -45,6 +49,8 @@ const articleBySlugQuery = `
 const articlesByCategoryQuery = `
   *[_type == "post" && $categoryId in categories[]._ref]{
     _id,
+    _createdAt,
+    _updatedAt,
     title,
     "slug": slug.current,
     "excerpt": pt::text(excerpt),

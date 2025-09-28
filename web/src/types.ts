@@ -17,6 +17,9 @@ export interface PortableTextBlock {
 }
 
 export interface Article {
+  _id: string; // Add _id to the type
+  _createdAt: string;
+  _updatedAt: string;
   slug: string;
   title: string;
   excerpt: string;
