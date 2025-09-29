@@ -9,7 +9,7 @@ type AdSenseProps = {
 export const AdSenseComponent = ({dataAdClient, dataAdSlot}: AdSenseProps) => {
   useEffect(() => {
     try {
-      // @ts-ignore
+      // @ts-expect-error adsbygoogle is a global variable from Google AdSense script
       ;(window.adsbygoogle = window.adsbygoogle || []).push({})
     } catch (err) {
       console.error(err)

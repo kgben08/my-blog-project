@@ -73,11 +73,25 @@ export default defineType({
       title: 'AdSense Ad',
       type: 'adSense', // `schemas/adSense.ts`で定義
     }),
-    // アフィリエイト商品カードブロック（前回の回答より）
     defineArrayMember({
-      name: 'affiliateProduct',
-      title: 'Affiliate Product Card',
-      type: 'affiliateProduct', // `schemas/affiliateProduct.ts`で定義
+      name: 'callToActionBlock',
+      title: 'Call to Action',
+      type: 'callToActionBlock',
+    }),
+    defineArrayMember({
+      name: 'affiliateBox',
+      title: 'Affiliate Box',
+      type: 'affiliateBox',
+    }),
+    defineArrayMember({
+      name: 'adEmbed',
+      title: 'Ad Embed',
+      type: 'adEmbed',
+    }),
+    defineArrayMember({
+      name: 'customHtmlEmbed',
+      title: 'Custom HTML Embed',
+      type: 'customHtmlEmbed',
     }),
   ],
 })

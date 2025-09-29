@@ -49,6 +49,12 @@ export default defineType({
       title: 'Body',
       type: 'blockContent',
     }),
+    defineField({
+      name: 'relatedAffiliateLinks',
+      title: 'Related Affiliate Links',
+      type: 'array',
+      of: [{type: 'reference', to: {type: 'affiliateLink'}}],
+    }),
   ],
 
   preview: {

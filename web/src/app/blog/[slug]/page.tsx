@@ -7,7 +7,10 @@ import type { PageProps } from 'next';
 import ReadingProgressBar from '@/components/ReadingProgressBar';
 import { PortableText } from '@portabletext/react';
 import { AdSenseComponent } from '@/components/AdSenseComponent';
-import { AffiliateProductComponent } from '@/components/AffiliateProductComponent';
+import CallToActionBlockComponent from '@/components/CallToActionBlockComponent';
+import AffiliateBoxComponent from '@/components/AffiliateBoxComponent';
+import AdEmbedComponent from '@/components/AdEmbedComponent';
+import CustomHtmlEmbedComponent from '@/components/CustomHtmlEmbedComponent';
 
 const components = {
   types: {
@@ -23,17 +26,19 @@ const components = {
         />
       </div>
     ),
-    adSense: ({ value }: any) => (
+    adSense: ({ value }: { value: { dataAdClient: string; dataAdSlot: string } }) => (
       <AdSenseComponent
         dataAdClient={value.dataAdClient}
         dataAdSlot={value.dataAdSlot}
       />
     ),
-    affiliateProduct: AffiliateProductComponent,
-
+    callToActionBlock: CallToActionBlockComponent,
+    affiliateBox: AffiliateBoxComponent,
+    adEmbed: AdEmbedComponent,
+    customHtmlEmbed: CustomHtmlEmbedComponent,
   },
   marks: {
-    link: ({children, value}: any) => {
+    link: ({children, value}: {children: React.ReactNode, value: { href: string }}) => {
       const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
       return (
         <a href={value.href} rel={rel} className="text-blue-500 underline hover:text-blue-600">
