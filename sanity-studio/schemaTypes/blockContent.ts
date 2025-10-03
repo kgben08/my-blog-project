@@ -93,5 +93,13 @@ export default defineType({
       title: 'Custom HTML Embed',
       type: 'customHtmlEmbed',
     }),
+    // ここから追加
+    defineArrayMember({
+      name: 'productEmbed',
+      title: '商品紹介の埋め込み',
+      type: 'reference',
+      to: [{type: 'product'}],
+    }),
+    // ここまで追加
   ],
 })

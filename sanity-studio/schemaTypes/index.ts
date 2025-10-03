@@ -9,6 +9,7 @@ import callToActionBlock from './callToActionBlock'
 import affiliateBox from './affiliateBox'
 import adEmbed from './adEmbed'
 import customHtmlEmbed from './customHtmlEmbed'
+import product from './product'
 
 export const schemaTypes = [
   post,
@@ -22,4 +23,5 @@ export const schemaTypes = [
   affiliateBox,
   adEmbed,
   customHtmlEmbed,
+  product,
 ]

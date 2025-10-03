@@ -6,25 +6,30 @@ import { ja } from 'date-fns/locale';
 import type { PageProps } from 'next';
 import ReadingProgressBar from '@/components/ReadingProgressBar';
 import { PortableText } from '@portabletext/react';
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
 import { AdSenseComponent } from '@/components/AdSenseComponent';
 import CallToActionBlockComponent from '@/components/CallToActionBlockComponent';
 import AffiliateBoxComponent from '@/components/AffiliateBoxComponent';
 import AdEmbedComponent from '@/components/AdEmbedComponent';
 import CustomHtmlEmbedComponent from '@/components/CustomHtmlEmbedComponent';
+import ProductEmbedComponent from '@/components/ProductEmbedComponent';
+import FadeInOnScroll from '@/components/FadeInOnScroll';
 
 const components = {
   types: {
     image: ({ value }: { value: { asset?: { url: string }, alt?: string } }) => (
-      <div className="relative w-full h-auto my-8">
-        <Image
-          src={value?.asset?.url || ''}
-          alt={value?.alt || 'Blog post image'}
-          width={700}
-          height={450}
-          className="rounded-lg shadow-lg"
-          style={{ objectFit: 'cover' }}
-        />
-      </div>
+      <FadeInOnScroll>
+        <div className="relative w-full h-auto my-8">
+          <Image
+            src={value?.asset?.url || ''}
+            alt={value?.alt || 'Blog post image'}
+            width={700}
+            height={450}
+            className="rounded-lg shadow-lg"
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
+      </FadeInOnScroll>
     ),
     adSense: ({ value }: { value: { dataAdClient: string; dataAdSlot: string } }) => (
       <AdSenseComponent
@@ -32,10 +37,31 @@ const components = {
         dataAdSlot={value.dataAdSlot}
       />
     ),
-    callToActionBlock: CallToActionBlockComponent,
-    affiliateBox: AffiliateBoxComponent,
-    adEmbed: AdEmbedComponent,
-    customHtmlEmbed: CustomHtmlEmbedComponent,
+    callToActionBlock: ({ value }: { value: { title: string; text: string; linkText: string; linkUrl: string; } }) => (
+      <FadeInOnScroll>
+        <CallToActionBlockComponent value={value} />
+      </FadeInOnScroll>
+    ),
+    affiliateBox: ({ value }: { value: { affiliateLink: { affiliateName: string; trackingUrl: string; displayTitle: string; description: string; imageAsset: SanityImageSource; rel: string; }; layout: 'card' | 'banner' } }) => (
+      <FadeInOnScroll>
+        <AffiliateBoxComponent value={value} />
+      </FadeInOnScroll>
+    ),
+    adEmbed: ({ value }: { value: { adCode: string } }) => (
+      <FadeInOnScroll>
+        <AdEmbedComponent value={value} />
+      </FadeInOnScroll>
+    ),
+    customHtmlEmbed: ({ value }: { value: { htmlCode: string } }) => (
+      <FadeInOnScroll>
+        <CustomHtmlEmbedComponent value={value} />
+      </FadeInOnScroll>
+    ),
+    productEmbed: ({ value }: { value: { name: string; slug: { current: string }; image: SanityImageSource; affiliateLink: string; rating: number; summary: string; merits: string[]; demerits: string[]; } }) => (
+      <FadeInOnScroll>
+        <ProductEmbedComponent value={value} />
+      </FadeInOnScroll>
+    ),
   },
   marks: {
     link: ({children, value}: {children: React.ReactNode, value: { href: string }}) => {
@@ -47,7 +73,11 @@ const components = {
       )
     },
     highlight: ({children}: {children: React.ReactNode}) => (
-      <span className="rounded bg-yellow-200 px-1 py-0.5 text-yellow-900">{children}</span>
+      <span style={{
+        backgroundImage: 'linear-gradient(transparent 60%, #FBBF24 60%)',
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',
+      }}>{children}</span>
     ),
     code: ({children}: {children: React.ReactNode}) => (
       <code className="rounded bg-gray-200 px-1 py-0.5 font-mono text-sm text-red-600">{children}</code>
